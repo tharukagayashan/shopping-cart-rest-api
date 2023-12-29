@@ -1,0 +1,11 @@
+spring:
+  profiles:
+    active: dev
+    application:
+      name: online-backend
+server:
+  port: 8085
+  servlet:
+    context-path: /api/v1/onlineshop
+
+#http://localhost:8081/api/v1/onlineshop/swagger-ui/index.html
