@@ -9,10 +9,10 @@
         <relativePath/>
     </parent>
     <groupId>com.project</groupId>
-    <artifactId>online-shop</artifactId>
+    <artifactId>shopping-cart</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>online-shop</name>
-    <description>Online Shop</description>
+    <name>shopping-cart</name>
+    <description>shopping-cart</description>
     <properties>
         <java.version>1.8</java.version>
     </properties>
@@ -80,7 +80,7 @@
                 </configuration>
             </plugin>
         </plugins>
-        <finalName>online-shop-jar</finalName>
+        <finalName>shopping-cart-jar</finalName>
     </build>
 
 </project>

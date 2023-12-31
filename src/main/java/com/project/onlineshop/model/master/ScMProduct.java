@@ -1,5 +1,7 @@
-package com.project.onlineshop.model;
+package com.project.onlineshop.model.master;
 
+import com.project.onlineshop.model.reference.ScRProductBrand;
+import com.project.onlineshop.model.reference.ScRProductSubCategory;
 import lombok.*;
 
 import javax.persistence.*;
@@ -10,14 +12,14 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-@Table(name = "PRODUCT", indexes = {
-        @Index(name = "PRODUCT_PRODUCT_CODE_UNQ_idx", columnList = "PRODUCT_CODE", unique = true),
-        @Index(name = "fk_PRODUCT_PRODUCT_SUB_CATEGORY_SUB_CAT_ID_idx", columnList = "SUB_CAT_ID")
+@Table(name = "SC_M_PRODUCT", indexes = {
+        @Index(name = "SC_M_PRODUCT_PRODUCT_CODE_UNQ_idx", columnList = "PRODUCT_CODE", unique = true),
+        @Index(name = "fk_SC_M_PRODUCT_PRODUCT_SUB_CATEGORY1_idx", columnList = "SUB_CAT_ID")
 })
-public class Product {
+public class ScMProduct {
 
     @Id
-    @GeneratedValue(generator = "PRODUCT", strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "SC_M_PRODUCT", strategy = GenerationType.IDENTITY)
     @Column(name = "PRODUCT_ID")
     private Long productId;
 
@@ -36,15 +38,15 @@ public class Product {
     @Column(name = "PRODUCT_QUANTITY")
     private Integer quantity;
 
-    @Column(name = "PRODUCT_IMAGE", length = 200)
+    @Column(name = "PRODUCT_IMAGE")
     private String image;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "SUB_CAT_ID", nullable = false, referencedColumnName = "SUB_CAT_ID")
-    private ProductSubCategory productSubCategory;
+    private ScRProductSubCategory scRProductSubCategory;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "BRAND_ID", nullable = false, referencedColumnName = "BRAND_ID")
-    private ProductBrand productBrand;
+    private ScRProductBrand scRProductBrand;
 
 }

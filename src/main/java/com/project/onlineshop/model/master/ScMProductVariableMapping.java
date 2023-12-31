@@ -1,5 +1,6 @@
-package com.project.onlineshop.model;
+package com.project.onlineshop.model.master;
 
+import com.project.onlineshop.model.reference.ScRProductVariable;
 import lombok.*;
 
 import javax.persistence.*;
@@ -10,11 +11,11 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-@Table(name = "PRODUCT_VARIABLE_MAPPING")
-public class ProductVariableMapping {
+@Table(name = "SC_M_PRODUCT_VARIABLE_MAPPING")
+public class ScMProductVariableMapping {
 
     @Id
-    @GeneratedValue(generator = "PRODUCT_VARIABLE_MAPPING", strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "SC_M_PRODUCT_VARIABLE_MAPPING", strategy = GenerationType.IDENTITY)
     @Column(name = "VARIABLE_MAPPING_ID")
     private Long variableMappingId;
 
@@ -23,10 +24,10 @@ public class ProductVariableMapping {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "VARIABLE_ID", nullable = false, referencedColumnName = "VARIABLE_ID")
-    private ProductVariable productVariable;
+    private ScRProductVariable scRProductVariable;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PRODUCT_ID", nullable = false, referencedColumnName = "PRODUCT_ID")
-    private Product product;
+    private ScMProduct scMProduct;
 
 }
