@@ -1,4 +1,4 @@
-package com.project.onlineshop.model;
+package com.project.onlineshop.model.reference;
 
 import lombok.*;
 
@@ -10,13 +10,13 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-@Table(name = "PRODUCT_TYPE", indexes = {
-        @Index(name = "PRODUCT_TYPE_TYPE_CODE_UNQ_idx", columnList = "TYPE_CODE", unique = true)
+@Table(name = "SC_R_PRODUCT_TYPE", indexes = {
+        @Index(name = "SC_R_PRODUCT_TYPE_TYPE_CODE_UNQ_idx", columnList = "TYPE_CODE", unique = true)
 })
-public class ProductType {
+public class ScRProductType {
 
     @Id
-    @GeneratedValue(generator = "PRODUCT_TYPE", strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "SC_R_PRODUCT_TYPE", strategy = GenerationType.IDENTITY)
     @Column(name = "TYPE_ID")
     private Long typeId;
 
