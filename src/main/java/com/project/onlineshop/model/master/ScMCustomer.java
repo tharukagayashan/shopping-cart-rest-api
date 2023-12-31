@@ -1,5 +1,6 @@
 package com.project.onlineshop.model.master;
 
+import com.project.onlineshop.model.reference.ScRStatus;
 import lombok.*;
 
 import javax.persistence.*;
@@ -13,7 +14,8 @@ import java.util.List;
 @Getter
 @Setter
 @Table(name = "SC_M_CUSTOMER", indexes = {
-        @Index(name = "SC_M_CUSTOMER_NIC_UNQ_IDX", columnList = "NIC", unique = true)
+        @Index(name = "SC_M_CUSTOMER_NIC_UNQ_IDX", columnList = "NIC", unique = true),
+
 })
 public class ScMCustomer {
 
@@ -45,6 +47,10 @@ public class ScMCustomer {
 
     @Column(name = "IS_ACTIVE")
     private Boolean isActive;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "STATUS_ID", referencedColumnName = "STATUS_ID", nullable = false)
+    private ScRStatus scRStatus;
 
     @OneToMany(mappedBy = "scMCustomer", fetch = FetchType.LAZY)
     private List<ScMShippingInfo> scMShippingInfos;

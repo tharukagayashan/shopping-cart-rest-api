@@ -1,8 +1,11 @@
 package com.project.onlineshop.model.reference;
 
+import com.project.onlineshop.model.master.ScMCustomer;
+import com.project.onlineshop.model.master.ScMOrder;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Builder
 @AllArgsConstructor
@@ -10,7 +13,9 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-@Table(name = "SC_R_STATUS")
+@Table(name = "SC_R_STATUS", indexes = {
+        @Index(name = "SC_R_STATUS_CODE_UNQ_IDX", columnList = "STATUS_CODE", unique = true)
+})
 public class ScRStatus {
 
     @Id
@@ -26,5 +31,11 @@ public class ScRStatus {
 
     @Column(name = "STATUS_TYPE", length = 45)
     private String type;
+
+    @OneToMany(mappedBy = "scRStatus", fetch = FetchType.LAZY)
+    private List<ScMOrder> scMOrders;
+
+    @OneToMany(mappedBy = "scRStatus", fetch = FetchType.LAZY)
+    private List<ScMCustomer> scMCustomers;
 
 }

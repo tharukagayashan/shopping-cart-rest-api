@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Table(name = "SC_M_STAFF", indexes = {
-        @Index(name = "SC_M_STAFF_SC_R_ROLE1_idx", columnList = "ROLE_ID"),
+        @Index(name = "fk_SC_M_STAFF_SC_R_ROLE1_idx", columnList = "ROLE_ID"),
         @Index(name = "SC_M_STAFF_USERNAME_UNQ_idx", columnList = "USERNAME")
 })
 public class ScMStaff {

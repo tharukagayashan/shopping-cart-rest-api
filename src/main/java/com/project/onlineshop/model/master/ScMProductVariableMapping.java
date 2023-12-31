@@ -11,7 +11,10 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-@Table(name = "SC_M_PRODUCT_VARIABLE_MAPPING")
+@Table(name = "SC_M_PRODUCT_VARIABLE_MAPPING", indexes = {
+        @Index(name = "SC_M_PRODUCT_VARIABLE_MAPPING_SC_R_VARIABLE1_idx", columnList = "VARIABLE_ID"),
+        @Index(name = "SC_M_PRODUCT_VARIABLE_MAPPING_SC_M_PRODUCT1_idx", columnList = "PRODUCT_ID")
+})
 public class ScMProductVariableMapping {
 
     @Id
