@@ -5,6 +5,7 @@ import com.project.onlineshop.model.reference.ScRProductSubCategory;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Builder
 @AllArgsConstructor
@@ -12,10 +13,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-@Table(name = "SC_M_PRODUCT", indexes = {
-        @Index(name = "SC_M_PRODUCT_PRODUCT_CODE_UNQ_idx", columnList = "PRODUCT_CODE", unique = true),
-        @Index(name = "fk_SC_M_PRODUCT_PRODUCT_SUB_CATEGORY1_idx", columnList = "SUB_CAT_ID")
-})
+@Table(name = "SC_M_PRODUCT", indexes = {@Index(name = "SC_M_PRODUCT_PRODUCT_CODE_UNQ_idx", columnList = "PRODUCT_CODE", unique = true), @Index(name = "fk_SC_M_PRODUCT_PRODUCT_SUB_CATEGORY1_idx", columnList = "SUB_CAT_ID")})
 public class ScMProduct {
 
     @Id
@@ -48,5 +46,8 @@ public class ScMProduct {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "BRAND_ID", nullable = false, referencedColumnName = "BRAND_ID")
     private ScRProductBrand scRProductBrand;
+
+    @OneToMany(mappedBy = "scMProduct", fetch = FetchType.LAZY)
+    private List<ScMOrderProduct> scMOrderProducts;
 
 }

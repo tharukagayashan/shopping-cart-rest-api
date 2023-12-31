@@ -49,4 +49,7 @@ public class ScMCustomer {
     @OneToMany(mappedBy = "scMCustomer", fetch = FetchType.LAZY)
     private List<ScMShippingInfo> scMShippingInfos;
 
+    @OneToMany(mappedBy = "scMCustomer", fetch = FetchType.LAZY)
+    private List<ScMOrder> scMOrders;
+
 }
