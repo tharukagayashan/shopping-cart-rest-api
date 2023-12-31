@@ -20,5 +20,8 @@ public class ScMStaffDto implements Serializable {
     private String mobileNo;
     private String address;
     private Boolean isActive;
+
+    private Long roleId;
+
     private ScRRoleDto scRRole;
 }
