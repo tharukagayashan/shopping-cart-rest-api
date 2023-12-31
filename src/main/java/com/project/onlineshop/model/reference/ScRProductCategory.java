@@ -1,4 +1,4 @@
-package com.project.onlineshop.model;
+package com.project.onlineshop.model.reference;
 
 import lombok.*;
 
@@ -10,14 +10,14 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-@Table(name = "PRODUCT_CATEGORY", indexes = {
-        @Index(name = "PRODUCT_CATEGORY_CAT_CODE_UNQ_idx", columnList = "CAT_CODE", unique = true),
-        @Index(name = "fk_PRODUCT_CATEGORY_ST_R_PR_TYPE_TYPE_ID_idx", columnList = "TYPE_ID")
+@Table(name = "SC_R_PRODUCT_CATEGORY", indexes = {
+        @Index(name = "SC_R_PRODUCT_CATEGORY_CAT_CODE_UNQ_idx", columnList = "CAT_CODE", unique = true),
+        @Index(name = "fk_SC_R_PRODUCT_CATEGORY_SC_R_PRODUCT_TYPE1_idx", columnList = "TYPE_ID")
 })
-public class ProductCategory {
+public class ScRProductCategory {
 
     @Id
-    @GeneratedValue(generator = "PRODUCT_CATEGORY", strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "SC_R_PRODUCT_CATEGORY", strategy = GenerationType.IDENTITY)
     @Column(name = "CAT_ID")
     private Long categoryId;
 
@@ -32,6 +32,6 @@ public class ProductCategory {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "TYPE_ID", nullable = false, referencedColumnName = "TYPE_ID")
-    private ProductType productType;
+    private ScRProductType scRProductType;
 
 }

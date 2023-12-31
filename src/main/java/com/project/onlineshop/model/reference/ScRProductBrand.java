@@ -1,4 +1,4 @@
-package com.project.onlineshop.model;
+package com.project.onlineshop.model.reference;
 
 import lombok.*;
 
@@ -10,11 +10,11 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-@Table(name = "PRODUCT_BRAND")
-public class ProductBrand {
+@Table(name = "SC_R_PRODUCT_BRAND")
+public class ScRProductBrand {
 
     @Id
-    @GeneratedValue(generator = "PRODUCT_BRAND", strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "SC_R_PRODUCT_BRAND", strategy = GenerationType.IDENTITY)
     @Column(name = "BRAND_ID")
     private Long brandId;
 
