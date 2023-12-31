@@ -10,7 +10,9 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(name = "SC_M_SHIPPING_INFO")
+@Table(name = "SC_M_SHIPPING_INFO", indexes = {
+        @Index(name = "fk_SC_M_SHIPPING_INFO_SC_M_CUSTOMER1_idx", columnList = "CUSTOMER_ID")
+})
 public class ScMShippingInfo {
 
     @Id

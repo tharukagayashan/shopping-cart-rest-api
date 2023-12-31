@@ -1,5 +1,6 @@
 package com.project.onlineshop.model.master;
 
+import com.project.onlineshop.model.reference.ScRStatus;
 import lombok.*;
 
 import javax.persistence.*;
@@ -47,6 +48,10 @@ public class ScMOrder {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CUSTOMER_ID", referencedColumnName = "CUSTOMER_ID")
     private ScMCustomer scMCustomer;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "STATUS_ID", referencedColumnName = "STATUS_ID", nullable = false)
+    private ScRStatus scRStatus;
 
     @OneToMany(mappedBy = "scMOrder", fetch = FetchType.LAZY)
     private List<ScMOrderProduct> scMOrderProducts;

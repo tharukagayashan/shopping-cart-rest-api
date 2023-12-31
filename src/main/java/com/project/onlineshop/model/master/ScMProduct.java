@@ -13,7 +13,11 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@Table(name = "SC_M_PRODUCT", indexes = {@Index(name = "SC_M_PRODUCT_PRODUCT_CODE_UNQ_idx", columnList = "PRODUCT_CODE", unique = true), @Index(name = "fk_SC_M_PRODUCT_PRODUCT_SUB_CATEGORY1_idx", columnList = "SUB_CAT_ID")})
+@Table(name = "SC_M_PRODUCT", indexes = {
+        @Index(name = "SC_M_PRODUCT_PRODUCT_CODE_UNQ_idx", columnList = "PRODUCT_CODE", unique = true),
+        @Index(name = "fk_SC_M_PRODUCT_SC_R_PRODUCT_BRAND1_idx", columnList = "BRAND_ID"),
+        @Index(name = "fk_SC_M_PRODUCT_SC_R_PRODUCT_SUB_CATEGORY1_idx", columnList = "SUB_CAT_ID")
+})
 public class ScMProduct {
 
     @Id
