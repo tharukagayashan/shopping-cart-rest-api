@@ -4,6 +4,8 @@ import com.project.onlineshop.dto.reference.ScRProductTypeDto;
 import com.project.onlineshop.model.reference.ScRProductType;
 import org.mapstruct.*;
 
+import java.util.List;
+
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = "spring")
 public interface ScRProductTypeMapper {
     ScRProductType toEntity(ScRProductTypeDto scRProductTypeDto);
@@ -12,4 +14,6 @@ public interface ScRProductTypeMapper {
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     ScRProductType partialUpdate(ScRProductTypeDto scRProductTypeDto, @MappingTarget ScRProductType scRProductType);
+
+    List<ScRProductTypeDto> entityListToDtoList(List<ScRProductType> productTypes);
 }
