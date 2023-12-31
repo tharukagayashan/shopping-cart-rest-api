@@ -14,7 +14,7 @@ import java.util.Date;
 @Service
 public class JWTUtils {
 
-    private static final String JWT_ISSUER = "smart-bank";
+    private static final String JWT_ISSUER = "shopping-cart";
     private static final String JWT_SECRET = "OJDW93R02C289M39920XM";
     private static final Long JWT_EXPIRATION = 86400000L;
 
@@ -28,12 +28,8 @@ public class JWTUtils {
                     .withIssuedAt(new Date())
                     .withExpiresAt(expiration)
                     .withSubject(tokenDto.getUsername())
-                    .withClaim("bank", tokenDto.getBank())
-                    .withClaim("branch", tokenDto.getBranch())
                     .withClaim("role", tokenDto.getRole())
                     .withClaim("email", tokenDto.getEmail())
-                    .withClaim("bankCode", tokenDto.getBankCode())
-                    .withClaim("branchCode", tokenDto.getBranchCode())
                     .withClaim("firstName", tokenDto.getFirstName())
                     .withClaim("lastName", tokenDto.getLastName())
                     .withClaim("roleId", tokenDto.getRoleId())
