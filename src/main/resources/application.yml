@@ -2,10 +2,10 @@ spring:
   profiles:
     active: dev
     application:
-      name: online-shop
+      name: shopping-cart
 server:
   port: 8085
   servlet:
-    context-path: /api/v1/onlineshop
+    context-path: /api/v1/shopping-cart
 
-#http://localhost:8081/api/v1/onlineshop/swagger-ui/index.html
+#http://localhost:8085/api/v1/shopping-cart/swagger-ui/index.html
