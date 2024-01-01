@@ -12,5 +12,8 @@ public class ScRProductCategoryDto {
     private String name;
     private String description;
     private String code;
+
+    private Long typeId;
+
     private ScRProductTypeDto scRProductType;
 }

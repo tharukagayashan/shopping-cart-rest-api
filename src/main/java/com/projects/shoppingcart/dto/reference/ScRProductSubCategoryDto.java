@@ -12,5 +12,8 @@ public class ScRProductSubCategoryDto {
     private String name;
     private String description;
     private String code;
+
+    private Long categoryId;
+
     private ScRProductCategoryDto scRProductCategory;
 }
