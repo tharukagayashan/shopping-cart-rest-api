@@ -1,8 +1,10 @@
 package com.projects.shoppingcart.model.reference;
 
+import com.projects.shoppingcart.model.master.ScMUser;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Builder
 @AllArgsConstructor
@@ -26,5 +28,8 @@ public class ScRRole {
 
     @Column(name = "IS_ACTIVE")
     private Boolean isActive;
+
+    @OneToMany(mappedBy = "scRRole", fetch = FetchType.LAZY)
+    private List<ScMUser> scMUsers;
 
 }

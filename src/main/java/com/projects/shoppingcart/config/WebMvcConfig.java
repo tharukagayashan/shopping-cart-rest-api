@@ -1,4 +1,4 @@
-package com.projects.shoppingcart.config;//package com.projects.smartbankingapi.config;
+package com.projects.shoppingcart.config;
 //
 //import org.springframework.context.annotation.Configuration;
 //import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
