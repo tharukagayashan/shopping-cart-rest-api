@@ -36,10 +36,6 @@ public class UserRegisterReqDto {
     @NotEmpty
     @NotNull
     private String mobileNo;
-    @NotBlank
-    @NotEmpty
-    @NotNull
-    private String address;
     @NotNull
     private Long roleId;
 }
