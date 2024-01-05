@@ -1,5 +1,6 @@
 package com.projects.shoppingcart.dto.auth;
 
+import com.projects.shoppingcart.dto.other.ShippingInfoCreateDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -38,4 +39,6 @@ public class UserRegisterReqDto {
     private String mobileNo;
     @NotNull
     private Long roleId;
+
+    private ShippingInfoCreateDto shippingInfo;
 }

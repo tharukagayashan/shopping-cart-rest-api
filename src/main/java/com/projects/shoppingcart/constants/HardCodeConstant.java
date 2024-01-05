@@ -7,4 +7,7 @@ public class HardCodeConstant {
 
     public static final Boolean ACTIVE = true;
     public static final Boolean INACTIVE = false;
+
+    public static final long ADMIN_ROLE_ID = 1;
+    public static final long CUSTOMER_ROLE_ID = 2;
 }

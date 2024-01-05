@@ -14,15 +14,20 @@ import java.util.Optional;
 @SpringBootApplication
 public class ShoppingCartApplication {
 
-    private static final ScRRoleRepository roleRepository = null;
-    private static final ScRStatusRepository statusRepository = null;
+    private static ScRRoleRepository roleRepository = null;
+    private static ScRStatusRepository statusRepository = null;
+
+    public ShoppingCartApplication(ScRRoleRepository roleRepository, ScRStatusRepository statusRepository) {
+        this.roleRepository = roleRepository;
+        this.statusRepository = statusRepository;
+    }
 
     public static void main(String[] args) {
         SpringApplication.run(ShoppingCartApplication.class, args);
-        createDefaultRecords();
+        insertRecordsFromCommandLine();
     }
 
-    static void createDefaultRecords() {
+    static void insertRecordsFromCommandLine() {
         Optional<ScRRole> optRole1 = roleRepository.findById(new Long(1));
         if (!optRole1.isPresent()) {
             ScRRole role1 = new ScRRole();
@@ -30,6 +35,7 @@ public class ShoppingCartApplication {
             role1.setDescription("Admin");
             role1.setIsActive(true);
             roleRepository.save(role1);
+            log.info("Admin created");
         } else {
             log.info("Admin already exists");
         }
@@ -41,6 +47,7 @@ public class ShoppingCartApplication {
             role2.setDescription("Customer");
             role2.setIsActive(true);
             roleRepository.save(role2);
+            log.info("Customer created");
         } else {
             log.info("Customer already exists");
         }
@@ -49,9 +56,10 @@ public class ShoppingCartApplication {
         if (!optStatus1.isPresent()) {
             ScRStatus status1 = new ScRStatus();
             status1.setName("New");
-            status1.setCode("New");
+            status1.setCode("N");
             status1.setType("Order");
             statusRepository.save(status1);
+            log.info("Status New created");
         } else {
             log.info("New already exists");
         }
@@ -60,9 +68,10 @@ public class ShoppingCartApplication {
         if (!optStatus2.isPresent()) {
             ScRStatus status2 = new ScRStatus();
             status2.setName("Pending");
-            status2.setCode("Pending");
+            status2.setCode("P");
             status2.setType("Order");
             statusRepository.save(status2);
+            log.info("Status Pending created");
         } else {
             log.info("Pending already exists");
         }
@@ -71,9 +80,10 @@ public class ShoppingCartApplication {
         if (!optStatus3.isPresent()) {
             ScRStatus status3 = new ScRStatus();
             status3.setName("Approved");
-            status3.setCode("Approved");
+            status3.setCode("A");
             status3.setType("Order");
             statusRepository.save(status3);
+            log.info("Status Approved created");
         } else {
             log.info("Approved already exists");
         }
