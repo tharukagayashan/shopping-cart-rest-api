@@ -13,5 +13,5 @@ public class ScMShopCartDto implements Serializable {
     private Long shopCartId;
     private Integer productQty;
     private ScMProductDto scMProduct;
-    private ScMCustomerDto scMCustomer;
+    private ScMUserDto scMUser;
 }

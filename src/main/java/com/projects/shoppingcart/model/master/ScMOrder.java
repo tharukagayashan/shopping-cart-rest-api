@@ -46,8 +46,8 @@ public class ScMOrder {
     private Float totalPayable;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "CUSTOMER_ID", referencedColumnName = "CUSTOMER_ID")
-    private ScMCustomer scMCustomer;
+    @JoinColumn(name = "USER_ID", referencedColumnName = "USER_ID")
+    private ScMUser scMUser;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "STATUS_ID", referencedColumnName = "STATUS_ID", nullable = false)

@@ -1,24 +1,27 @@
 package com.projects.shoppingcart.dto.master;
 
+import com.projects.shoppingcart.dto.reference.ScRRoleDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Value;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class ScMCustomerDto {
-    private Long customerId;
+public class ScMUserDto implements Serializable {
+    private Long userId;
     private String firstName;
     private String lastName;
-    private LocalDate dob;
     private String email;
+    private String username;
+    private String password;
     private String mobileNo;
-    private String nic;
-    private String gender;
+    private String address;
     private Boolean isActive;
+
+    private Long roleId;
+
+    private ScRRoleDto scRRole;
 }

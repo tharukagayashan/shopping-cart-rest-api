@@ -20,5 +20,5 @@ public class ScMShippingInfoDto {
     private String addressLine2;
     private String addressLine3;
     private Boolean isDefault;
-    private ScMCustomerDto scMCustomer;
+    private ScMUserDto scMUser;
 }

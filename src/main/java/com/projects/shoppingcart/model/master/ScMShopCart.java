@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Setter
 @Table(name = "SC_M_SHOP_CART", indexes = {
         @Index(name = "fk_SC_M_SHOP_CART_SC_M_PRODUCT1_idx", columnList = "PRODUCT_ID"),
-        @Index(name = "fk_SC_M_SHOP_CART_SC_M_CUSTOMER1_idx", columnList = "CUSTOMER_ID")
+        @Index(name = "fk_SC_M_SHOP_CART_SC_M_USER1_idx", columnList = "USER_ID")
 })
 public class ScMShopCart {
 
@@ -28,7 +28,7 @@ public class ScMShopCart {
     private ScMProduct scMProduct;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "CUSTOMER_ID", referencedColumnName = "CUSTOMER_ID", nullable = false)
-    private ScMCustomer scMCustomer;
+    @JoinColumn(name = "USER_ID", referencedColumnName = "USER_ID", nullable = false)
+    private ScMUser scMUser;
 
 }

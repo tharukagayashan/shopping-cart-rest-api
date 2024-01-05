@@ -2,16 +2,16 @@ package com.projects.shoppingcart.service.other.impl;
 
 import com.projects.shoppingcart.config.JWTUtils;
 import com.projects.shoppingcart.config.PasswordUtils;
-import com.projects.shoppingcart.dao.master.ScMStaffRepository;
+import com.projects.shoppingcart.dao.master.ScMUserRepository;
 import com.projects.shoppingcart.dao.reference.ScRRoleRepository;
 import com.projects.shoppingcart.dto.auth.LoginReqDto;
 import com.projects.shoppingcart.dto.auth.LoginResponseDto;
-import com.projects.shoppingcart.dto.auth.StaffRegisterReqDto;
 import com.projects.shoppingcart.dto.auth.TokenDto;
-import com.projects.shoppingcart.dto.master.ScMStaffDto;
+import com.projects.shoppingcart.dto.auth.UserRegisterReqDto;
+import com.projects.shoppingcart.dto.master.ScMUserDto;
 import com.projects.shoppingcart.error.BadRequestAlertException;
-import com.projects.shoppingcart.mapper.master.ScMStaffMapper;
-import com.projects.shoppingcart.model.master.ScMStaff;
+import com.projects.shoppingcart.mapper.master.ScMUserMapper;
+import com.projects.shoppingcart.model.master.ScMUser;
 import com.projects.shoppingcart.model.reference.ScRRole;
 import com.projects.shoppingcart.service.other.AuthService;
 import lombok.extern.slf4j.Slf4j;
@@ -24,81 +24,80 @@ import java.util.Optional;
 @Service
 public class AuthServiceImpl implements AuthService {
 
-    private final ScMStaffMapper staffMapper;
-    private final ScMStaffRepository staffRepository;
+    private final ScMUserMapper userMapper;
+    private final ScMUserRepository userRepository;
     private final ScRRoleRepository roleRepository;
 
-    public AuthServiceImpl(ScMStaffMapper staffMapper, ScMStaffRepository staffRepository, ScRRoleRepository roleRepository) {
-        this.staffMapper = staffMapper;
-        this.staffRepository = staffRepository;
+    public AuthServiceImpl(ScMUserMapper userMapper, ScMUserRepository userRepository, ScRRoleRepository roleRepository) {
+        this.userMapper = userMapper;
+        this.userRepository = userRepository;
         this.roleRepository = roleRepository;
     }
 
     @Override
-    public ResponseEntity<ScMStaffDto> registerStaffMember(StaffRegisterReqDto staffRegisterReqDto) {
+    public ResponseEntity<ScMUserDto> registerUser(UserRegisterReqDto userRegisterReqDto) {
         try {
 
-            Optional<ScMStaff> optStaff = staffRepository.findByUsername(staffRegisterReqDto.getUsername());
-            if (optStaff.isPresent()) {
-                throw new BadRequestAlertException("Username already exists", "staff", "staff");
+            Optional<ScMUser> optUser = userRepository.findByUsername(userRegisterReqDto.getUsername());
+            if (optUser.isPresent()) {
+                throw new BadRequestAlertException("Username already exists", "user", "user");
             } else {
-                Optional<ScRRole> optRole = roleRepository.findById(staffRegisterReqDto.getRoleId());
+                Optional<ScRRole> optRole = roleRepository.findById(userRegisterReqDto.getRoleId());
 
                 if (!optRole.isPresent()) {
-                    throw new BadRequestAlertException("Role not found", "staff", "staff");
+                    throw new BadRequestAlertException("Role not found", "user", "user");
                 } else {
                     log.info("Role and Branch found");
                 }
 
-                String encryptedPassword = PasswordUtils.encodePassword(staffRegisterReqDto.getPassword());
+                String encryptedPassword = PasswordUtils.encodePassword(userRegisterReqDto.getPassword());
 
-                ScMStaff staff = new ScMStaff();
-                staff.setFirstName(staffRegisterReqDto.getFirstName());
-                staff.setLastName(staffRegisterReqDto.getLastName());
-                staff.setEmail(staffRegisterReqDto.getEmail());
-                staff.setUsername(staffRegisterReqDto.getUsername());
-                staff.setPassword(encryptedPassword);
-                staff.setMobileNo(staffRegisterReqDto.getMobileNo());
-                staff.setAddress(staffRegisterReqDto.getAddress());
-                staff.setIsActive(true);
-                staff.setScRRole(optRole.get());
-                staff = staffRepository.save(staff);
-                if (staff.getStaffId() == null) {
-                    throw new BadRequestAlertException("Error while registering staff member", "staff", "staff");
+                ScMUser user = new ScMUser();
+                user.setFirstName(userRegisterReqDto.getFirstName());
+                user.setLastName(userRegisterReqDto.getLastName());
+                user.setEmail(userRegisterReqDto.getEmail());
+                user.setUsername(userRegisterReqDto.getUsername());
+                user.setPassword(encryptedPassword);
+                user.setMobileNo(userRegisterReqDto.getMobileNo());
+                user.setIsActive(true);
+                user.setScRRole(optRole.get());
+                user = userRepository.save(user);
+                if (user.getUserId() == null) {
+                    throw new BadRequestAlertException("Error while registering user member", "user", "user");
                 } else {
-                    log.info("Staff member registered successfully");
-                    return ResponseEntity.ok(staffMapper.toDto(staff));
+                    log.info("User member registered successfully");
+                    return ResponseEntity.ok(userMapper.toDto(user));
                 }
             }
         } catch (Exception e) {
-            log.error("Error while registering staff member: {}", e.getMessage());
-            throw new BadRequestAlertException(e.getMessage(), "staff", "staff");
+            log.error("Error while registering user member: {}", e.getMessage());
+            throw new BadRequestAlertException(e.getMessage(), "user", "user");
         }
     }
 
     @Override
-    public ResponseEntity<LoginResponseDto> loginStaffMember(LoginReqDto loginReqDto) {
+    public ResponseEntity<LoginResponseDto> loginUser(LoginReqDto loginReqDto) {
         try {
-            Optional<ScMStaff> optStaff = staffRepository.findByUsername(loginReqDto.getUsername());
-            if (!optStaff.isPresent()) {
-                throw new BadRequestAlertException("Invalid username or password", "staff", "staff");
+            Optional<ScMUser> optUser = userRepository.findByUsername(loginReqDto.getUsername());
+            if (!optUser.isPresent()) {
+                throw new BadRequestAlertException("Invalid username or password", "user", "user");
             } else {
-                ScMStaff staff = optStaff.get();
-                if (!PasswordUtils.isPasswordValid(loginReqDto.getPassword(), staff.getPassword())) {
-                    throw new BadRequestAlertException("Invalid username or password", "staff", "staff");
+                ScMUser user = optUser.get();
+                if (!PasswordUtils.isPasswordValid(loginReqDto.getPassword(), user.getPassword())) {
+                    throw new BadRequestAlertException("Invalid username or password", "user", "user");
                 } else {
-                    if (!staff.getIsActive()) {
-                        throw new BadRequestAlertException("Staff member is not active", "staff", "staff");
+                    if (!user.getIsActive()) {
+                        throw new BadRequestAlertException("User member is not active", "user", "user");
                     } else {
 
                         try {
                             TokenDto tokenDto = new TokenDto();
-                            tokenDto.setUsername(staff.getUsername());
-                            tokenDto.setFirstName(staff.getFirstName());
-                            tokenDto.setLastName(staff.getLastName());
-                            tokenDto.setRole(staff.getScRRole().getRoleName());
-                            tokenDto.setEmail(staff.getEmail());
-                            tokenDto.setRoleId(staff.getScRRole().getRoleId());
+                            tokenDto.setUsername(user.getUsername());
+                            tokenDto.setFirstName(user.getFirstName());
+                            tokenDto.setLastName(user.getLastName());
+                            tokenDto.setRole(user.getScRRole().getRoleName());
+                            tokenDto.setEmail(user.getEmail());
+                            tokenDto.setRoleId(user.getScRRole().getRoleId());
 
                             String generatedToken = JWTUtils.generateJWTToken(tokenDto);
 
@@ -109,40 +108,40 @@ public class AuthServiceImpl implements AuthService {
                             return ResponseEntity.ok(loginResponseDto);
                         } catch (Exception e) {
                             log.error("Error while generating token: {}", e.getMessage());
-                            throw new BadRequestAlertException(e.getMessage(), "staff", "staff");
+                            throw new BadRequestAlertException(e.getMessage(), "user", "user");
                         }
                     }
                 }
             }
 
         } catch (Exception e) {
-            log.error("Error while logging in staff member: {}", e.getMessage());
-            throw new BadRequestAlertException(e.getMessage(), "staff", "staff");
+            log.error("Error while logging in user member: {}", e.getMessage());
+            throw new BadRequestAlertException(e.getMessage(), "user", "user");
         }
     }
 
     @Override
-    public ResponseEntity<ScMStaffDto> getLoginUserDetails(String token) {
+    public ResponseEntity<ScMUserDto> getLoginUserDetails(String token) {
         try {
             if (!JWTUtils.validateJWTToken(token)) {
-                throw new BadRequestAlertException("Invalid token", "staff", "staff");
+                throw new BadRequestAlertException("Invalid token", "user", "user");
             } else {
                 String username = JWTUtils.getUsernameFromToken(token);
-                Optional<ScMStaff> optStaff = staffRepository.findByUsername(username);
-                if (!optStaff.isPresent()) {
-                    throw new BadRequestAlertException("Invalid token", "staff", "staff");
+                Optional<ScMUser> optUser = userRepository.findByUsername(username);
+                if (!optUser.isPresent()) {
+                    throw new BadRequestAlertException("Invalid token", "user", "user");
                 } else {
-                    ScMStaff staff = optStaff.get();
-                    if (!staff.getIsActive()) {
-                        throw new BadRequestAlertException("Staff member is not active", "staff", "staff");
+                    ScMUser user = optUser.get();
+                    if (!user.getIsActive()) {
+                        throw new BadRequestAlertException("User member is not active", "user", "user");
                     } else {
-                        return ResponseEntity.ok(staffMapper.toDto(staff));
+                        return ResponseEntity.ok(userMapper.toDto(user));
                     }
                 }
             }
         } catch (Exception e) {
             log.error("Error while getting login user details: {}", e.getMessage());
-            throw new BadRequestAlertException(e.getMessage(), "staff", "staff");
+            throw new BadRequestAlertException(e.getMessage(), "user", "user");
         }
     }
 

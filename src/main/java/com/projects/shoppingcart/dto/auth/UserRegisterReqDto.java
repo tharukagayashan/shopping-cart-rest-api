@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class StaffRegisterReqDto {
+public class UserRegisterReqDto {
     @NotBlank
     @NotEmpty
     @NotNull
@@ -36,10 +36,6 @@ public class StaffRegisterReqDto {
     @NotEmpty
     @NotNull
     private String mobileNo;
-    @NotBlank
-    @NotEmpty
-    @NotNull
-    private String address;
     @NotNull
     private Long roleId;
 }

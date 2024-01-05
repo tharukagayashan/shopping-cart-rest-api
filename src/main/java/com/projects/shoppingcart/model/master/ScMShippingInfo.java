@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Table(name = "SC_M_SHIPPING_INFO", indexes = {
-        @Index(name = "fk_SC_M_SHIPPING_INFO_SC_M_CUSTOMER1_idx", columnList = "CUSTOMER_ID")
+        @Index(name = "fk_SC_M_SHIPPING_INFO_SC_M_USER1_idx", columnList = "USER_ID")
 })
 public class ScMShippingInfo {
 
@@ -54,7 +54,7 @@ public class ScMShippingInfo {
     private Boolean isDefault;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "CUSTOMER_ID", referencedColumnName = "CUSTOMER_ID", nullable = false)
-    private ScMCustomer scMCustomer;
+    @JoinColumn(name = "USER_ID", referencedColumnName = "USER_ID", nullable = false)
+    private ScMUser scMUser;
 
 }
