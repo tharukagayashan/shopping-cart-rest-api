@@ -6,7 +6,6 @@ import com.projects.shoppingcart.dao.master.ScMUserRepository;
 import com.projects.shoppingcart.dao.reference.ScRRoleRepository;
 import com.projects.shoppingcart.dto.auth.LoginReqDto;
 import com.projects.shoppingcart.dto.auth.LoginResponseDto;
-import com.projects.shoppingcart.dto.auth.UserRegisterReqDto;
 import com.projects.shoppingcart.dto.auth.TokenDto;
 import com.projects.shoppingcart.dto.auth.UserRegisterReqDto;
 import com.projects.shoppingcart.dto.master.ScMUserDto;
