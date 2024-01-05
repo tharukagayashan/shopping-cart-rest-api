@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class StaffRegisterReqDto {
+public class UserRegisterReqDto {
     @NotBlank
     @NotEmpty
     @NotNull

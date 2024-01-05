@@ -1,6 +1,5 @@
 package com.projects.shoppingcart.model.reference;
 
-import com.projects.shoppingcart.model.master.ScMCustomer;
 import com.projects.shoppingcart.model.master.ScMOrder;
 import lombok.*;
 
@@ -34,8 +33,5 @@ public class ScRStatus {
 
     @OneToMany(mappedBy = "scRStatus", fetch = FetchType.LAZY)
     private List<ScMOrder> scMOrders;
-
-    @OneToMany(mappedBy = "scRStatus", fetch = FetchType.LAZY)
-    private List<ScMCustomer> scMCustomers;
 
 }

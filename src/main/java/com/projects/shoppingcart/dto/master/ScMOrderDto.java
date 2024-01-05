@@ -19,5 +19,5 @@ public class ScMOrderDto {
     private Float totalDiscount;
     private Float totalTax;
     private Float totalPayable;
-    private ScMCustomerDto scMCustomer;
+    private ScMUserDto scMUserDto;
 }
