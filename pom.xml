@@ -97,7 +97,6 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
     <build>
         <plugins>
             <plugin>
@@ -144,5 +143,4 @@
         </plugins>
         <finalName>shopping-cart-jar</finalName>
     </build>
-
 </project>

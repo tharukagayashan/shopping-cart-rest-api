@@ -21,6 +21,6 @@ public class ScMProductDto {
     private Long subCategoryId;
     private Long brandId;
 
-    private ScRProductSubCategoryDto scRProductSubCategory;
-    private ScRProductBrandDto scRProductBrand;
+//    private ScRProductSubCategoryDto scRProductSubCategory;
+//    private ScRProductBrandDto scRProductBrand;
 }
