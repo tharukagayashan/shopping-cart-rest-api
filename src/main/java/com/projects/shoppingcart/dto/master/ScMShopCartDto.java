@@ -12,6 +12,9 @@ import java.io.Serializable;
 public class ScMShopCartDto implements Serializable {
     private Long shopCartId;
     private Integer productQty;
-    private ScMProductDto scMProduct;
-    private ScMUserDto scMUser;
+
+    private Long productId;
+    private Long userId;
+//    private ScMProductDto scMProduct;
+//    private ScMUserDto scMUser;
 }
