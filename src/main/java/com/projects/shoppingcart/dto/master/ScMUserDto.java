@@ -18,7 +18,6 @@ public class ScMUserDto implements Serializable {
     private String username;
     private String password;
     private String mobileNo;
-    private String address;
     private Boolean isActive;
 
     private Long roleId;

@@ -131,6 +131,8 @@ public class ProductServiceImpl implements ProductService {
         product.setImage(productCreateReqDto.getImage());
         product.setScRProductSubCategory(optProductSubCategory.get());
         product.setScRProductBrand(optProductBrand.get());
+        product.setDiscount(productCreateReqDto.getDiscount());
+        product.setIsActive(true);
         return product;
     }
 
@@ -157,6 +159,7 @@ public class ProductServiceImpl implements ProductService {
                     singleProductDto.setSubCategoryName(product.getScRProductSubCategory().getName());
                     singleProductDto.setBrandId(product.getScRProductBrand().getBrandId());
                     singleProductDto.setBrandName(product.getScRProductBrand().getName());
+                    singleProductDto.setDiscount(product.getDiscount());
 
                     List<ScMProductVariableMappingDto> productVariableMappingDtoList = new ArrayList<>();
                     List<ScMProductVariableMapping> productVariableMappingList = productVariableMappingRepository.findByScMProductProductId(product.getProductId());
@@ -256,6 +259,8 @@ public class ProductServiceImpl implements ProductService {
                         product.setImage(singleProductDto.getImage());
                         product.setScRProductSubCategory(optProductSubCategory.get());
                         product.setScRProductBrand(optProductBrand.get());
+                        product.setDiscount(singleProductDto.getDiscount());
+                        product.setIsActive(singleProductDto.getIsActive());
                         product = productRepository.save(product);
                         log.info("Product updated successfully : {}", product);
                         return ResponseEntity.ok(productMapper.toDto(product));

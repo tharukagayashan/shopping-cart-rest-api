@@ -16,6 +16,6 @@ public interface ScMProductRepository extends JpaRepository<ScMProduct, Long> {
             "(:subCategoryId IS NULL OR P.scRProductSubCategory.subCategoryId = :subCategoryId) AND " +
             "(:brandId IS NULL OR P.scRProductBrand.brandId = :brandId) AND " +
             "(lower(P.name) LIKE %:search% OR " +
-            "lower(P.code) LIKE %:search%)")
+            "lower(P.code) LIKE %:search%) AND P.isActive = true")
     Page<ScMProduct> findAllProductsForTable(@Param("search") String search, PageRequest of,@Param("subCategoryId") Long subCategoryId,@Param("brandId") Long brandId);
 }

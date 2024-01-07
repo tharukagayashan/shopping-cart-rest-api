@@ -5,6 +5,8 @@ import com.projects.shoppingcart.dao.master.ScMShopCartRepository;
 import com.projects.shoppingcart.dao.master.ScMUserRepository;
 import com.projects.shoppingcart.dto.master.ScMShopCartDto;
 import com.projects.shoppingcart.dto.other.AddToCartDto;
+import com.projects.shoppingcart.dto.other.CartItemResponseDto;
+import com.projects.shoppingcart.dto.other.CartResponseDto;
 import com.projects.shoppingcart.error.BadRequestAlertException;
 import com.projects.shoppingcart.mapper.master.ScMShopCartMapper;
 import com.projects.shoppingcart.model.master.ScMProduct;
@@ -15,6 +17,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -49,6 +53,8 @@ public class CartServiceImpl implements CartService {
                 shopCart.setProductQty(addToCartDto.getProductQty());
                 shopCart.setScMProduct(optProduct.get());
                 shopCart.setScMUser(optUser.get());
+                shopCart.setDateAdded(LocalDate.now());
+                shopCart.setTimeAdded(LocalTime.now());
                 shopCart = shopCartRepository.save(shopCart);
                 if (shopCart.getShopCartId() == null) {
                     throw new BadRequestAlertException("Error while adding to cart", "Cart", "addToCart");
@@ -88,23 +94,57 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public ResponseEntity<List<ScMShopCartDto>> getCart(Long userId) {
+    public ResponseEntity<CartResponseDto> getCart(Long userId) {
         try {
             Optional<ScMUser> optUser = userRepository.findById(userId);
             if (!optUser.isPresent()) {
                 throw new BadRequestAlertException("User not found", "Cart", "getCart");
             } else {
-                List<ScMShopCartDto> shopCartDtoList = new ArrayList<>();
+                CartResponseDto cartResponseDto = new CartResponseDto();
                 List<ScMShopCart> shopCartList = shopCartRepository.findAllByScMUser(optUser.get());
+                float totalPrice = 0;
+                float totalDiscount = 0;
                 if (!shopCartList.isEmpty()) {
-                    shopCartDtoList = shopCartMapper.entityListToDtoList(shopCartList);
+                    List<CartItemResponseDto> cartItemResponseDtoList = new ArrayList<>();
+                    for (ScMShopCart shopCart : shopCartList) {
+
+                        float productTotalPrice = shopCart.getScMProduct().getPrice() * shopCart.getProductQty();
+                        float discount = productTotalPrice * shopCart.getScMProduct().getDiscount() / 100;
+
+                        totalPrice += productTotalPrice;
+                        totalDiscount += discount;
+
+                        CartItemResponseDto cartItemResponseDto = getCartItemResponseDto(shopCart, productTotalPrice, discount);
+                        cartItemResponseDtoList.add(cartItemResponseDto);
+                    }
+                    cartResponseDto.setUserId(userId);
+                    cartResponseDto.setItems(cartItemResponseDtoList);
+                    cartResponseDto.setTotalPrice(totalPrice);
+                    cartResponseDto.setTotalDiscount(totalDiscount);
+
+                    return ResponseEntity.ok(cartResponseDto);
+                } else {
+                    throw new BadRequestAlertException("Cart is empty", "Cart", "getCart");
                 }
-                return ResponseEntity.ok(shopCartDtoList);
             }
         } catch (Exception e) {
             log.error("Error while getting cart: {}", e.getMessage());
             throw new BadRequestAlertException(e.getMessage(), "Cart", "getCart");
         }
+    }
+
+    private static CartItemResponseDto getCartItemResponseDto(ScMShopCart shopCart, float productTotalPrice, float discount) {
+        CartItemResponseDto cartItemResponseDto = new CartItemResponseDto();
+        cartItemResponseDto.setProductId(shopCart.getScMProduct().getProductId());
+        cartItemResponseDto.setProductName(shopCart.getScMProduct().getName());
+        cartItemResponseDto.setProductQty(shopCart.getProductQty());
+        cartItemResponseDto.setPricePerUnit(shopCart.getScMProduct().getPrice());
+        cartItemResponseDto.setImage(shopCart.getScMProduct().getImage());
+        cartItemResponseDto.setDateAdded(shopCart.getDateAdded());
+        cartItemResponseDto.setTimeAdded(shopCart.getTimeAdded());
+        cartItemResponseDto.setTotalPrice(productTotalPrice);
+        cartItemResponseDto.setDiscount(discount);
+        return cartItemResponseDto;
     }
 
     @Override

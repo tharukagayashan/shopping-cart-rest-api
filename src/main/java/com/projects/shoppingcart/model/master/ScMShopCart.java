@@ -1,8 +1,12 @@
 package com.projects.shoppingcart.model.master;
 
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Builder
 @Entity
@@ -22,6 +26,12 @@ public class ScMShopCart {
 
     @Column(name = "PRODUCT_QTY")
     private Integer productQty;
+
+    @Column(name = "DATE_ADDED")
+    private LocalDate dateAdded;
+
+    @Column(name = "TIME_ADDED")
+    private LocalTime timeAdded;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PRODUCT_ID", referencedColumnName = "PRODUCT_ID", nullable = false)

@@ -51,6 +51,11 @@ public class SingleProductDto {
     @NotNull
     private Long brandId;
     private String brandName;
+    @JsonProperty("discount")
+    @NotNull
+    @Min(0)
+    private Float discount;
+    private Boolean isActive;
 
     private List<ScMProductVariableMappingDto> productVariables;
 }

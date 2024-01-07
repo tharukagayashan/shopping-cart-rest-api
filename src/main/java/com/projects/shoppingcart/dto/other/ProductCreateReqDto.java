@@ -44,6 +44,10 @@ public class ProductCreateReqDto {
     @JsonProperty("brandId")
     @NotNull
     private Long brandId;
+    @JsonProperty("discount")
+    @NotNull
+    @Min(0)
+    private Float discount;
 
     private List<ProductVariableDto> productVariables;
 }

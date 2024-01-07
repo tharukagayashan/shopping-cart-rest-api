@@ -2,6 +2,7 @@ package com.projects.shoppingcart.rest.master;
 
 import com.projects.shoppingcart.dto.master.ScMShopCartDto;
 import com.projects.shoppingcart.dto.other.AddToCartDto;
+import com.projects.shoppingcart.dto.other.CartResponseDto;
 import com.projects.shoppingcart.service.master.CartService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +29,7 @@ public class CartController {
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<List<ScMShopCartDto>> getCart(@PathVariable("userId") Long userId) {
+    public ResponseEntity<CartResponseDto> getCart(@PathVariable("userId") Long userId) {
         return cartService.getCart(userId);
     }
 
