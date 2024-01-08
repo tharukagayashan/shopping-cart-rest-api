@@ -20,7 +20,7 @@ public class ScMShippingInfo {
     @Column(name = "SHIPPING_INFO_ID", nullable = false)
     private Long shippingInfoId;
 
-    @Column(name = "FULL NAME", length = 60)
+    @Column(name = "FULL_NAME", length = 60)
     private String fullName;
 
     @Column(name = "MOBILE_NO", length = 15)

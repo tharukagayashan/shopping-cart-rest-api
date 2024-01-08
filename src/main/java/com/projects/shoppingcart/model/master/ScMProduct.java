@@ -43,6 +43,12 @@ public class ScMProduct {
     @Column(name = "PRODUCT_IMAGE")
     private String image;
 
+    @Column(name = "IS_ACTIVE")
+    private Boolean isActive;
+
+    @Column(name = "PRODUCT_DISCOUNT")
+    private Float discount;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "SUB_CAT_ID", nullable = false, referencedColumnName = "SUB_CAT_ID")
     private ScRProductSubCategory scRProductSubCategory;
