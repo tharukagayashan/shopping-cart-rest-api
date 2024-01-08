@@ -30,7 +30,7 @@ public class SwaggerConfig {
     }
 
     private ApiInfo apiInfoMetaData() {
-        return new ApiInfoBuilder().title("Smart Banking API")
+        return new ApiInfoBuilder().title("Shopping Cart API")
                 .description("API Endpoint Documentation")
                 .contact(new Contact("", "", ""))
                 .license("Apache License, Version 2.0")

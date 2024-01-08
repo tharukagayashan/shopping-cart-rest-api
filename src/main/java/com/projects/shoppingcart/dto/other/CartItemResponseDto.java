@@ -1,22 +1,23 @@
-package com.projects.shoppingcart.dto.master;
+package com.projects.shoppingcart.dto.other;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class ScMShopCartDto implements Serializable {
-    private Long shopCartId;
+public class CartItemResponseDto {
+    private Long productId;
+    private String productName;
     private Integer productQty;
+    private Float pricePerUnit;
+    private String image;
     private LocalDate dateAdded;
     private LocalTime timeAdded;
-
-    private Long productId;
-    private Long userId;
+    private Float totalPrice;
+    private Float discount;
 }

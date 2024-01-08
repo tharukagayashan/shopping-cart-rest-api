@@ -17,6 +17,12 @@ public class ScMProductDto {
     private Float price;
     private Integer quantity;
     private String image;
-    private ScRProductSubCategoryDto scRProductSubCategory;
-    private ScRProductBrandDto scRProductBrand;
+    private Boolean isActive;
+    private Float discount;
+
+    private Long subCategoryId;
+    private Long brandId;
+
+//    private ScRProductSubCategoryDto scRProductSubCategory;
+//    private ScRProductBrandDto scRProductBrand;
 }
