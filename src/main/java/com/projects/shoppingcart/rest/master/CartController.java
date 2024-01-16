@@ -20,7 +20,7 @@ public class CartController {
     }
 
     @PostMapping
-    public ResponseEntity<ScMShopCartDto> addToCart(AddToCartDto addToCartDto) {
+    public ResponseEntity<ScMShopCartDto> addToCart(@RequestBody AddToCartDto addToCartDto) {
         return cartService.addToCart(addToCartDto);
     }
 

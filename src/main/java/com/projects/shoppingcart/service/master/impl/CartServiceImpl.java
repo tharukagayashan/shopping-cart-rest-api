@@ -62,16 +62,27 @@ public class CartServiceImpl implements CartService {
             } else if (!optUser.isPresent()) {
                 throw new BadRequestAlertException("User not found", "Cart", "addToCart");
             } else {
-                ScMShopCart shopCart = new ScMShopCart();
-                shopCart.setProductQty(addToCartDto.getProductQty());
-                shopCart.setScMProduct(optProduct.get());
-                shopCart.setScMUser(optUser.get());
-                shopCart.setDateAdded(LocalDate.now());
-                shopCart.setTimeAdded(LocalTime.now());
-                shopCart = shopCartRepository.save(shopCart);
-                if (shopCart.getShopCartId() == null) {
-                    throw new BadRequestAlertException("Error while adding to cart", "Cart", "addToCart");
+                Optional<ScMShopCart> optShopCart = shopCartRepository.findByScMUserAndScMProduct(optUser.get(), optProduct.get());
+                if (!optShopCart.isPresent()) {
+                    ScMShopCart shopCart = new ScMShopCart();
+                    shopCart.setProductQty(addToCartDto.getProductQty());
+                    shopCart.setScMProduct(optProduct.get());
+                    shopCart.setScMUser(optUser.get());
+                    shopCart.setDateAdded(LocalDate.now());
+                    shopCart.setTimeAdded(LocalTime.now());
+                    shopCart = shopCartRepository.save(shopCart);
+                    if (shopCart.getShopCartId() == null) {
+                        throw new BadRequestAlertException("Error while adding to cart", "Cart", "addToCart");
+                    } else {
+                        return ResponseEntity.ok(shopCartMapper.toDto(shopCart));
+                    }
                 } else {
+                    ScMShopCart shopCart = optShopCart.get();
+                    shopCart.setProductQty(shopCart.getProductQty() + addToCartDto.getProductQty());
+                    shopCart.setDateAdded(LocalDate.now());
+                    shopCart.setTimeAdded(LocalTime.now());
+                    shopCart = shopCartRepository.save(shopCart);
+                    log.info("Cart existing item updated: {}", shopCart.getShopCartId());
                     return ResponseEntity.ok(shopCartMapper.toDto(shopCart));
                 }
             }
