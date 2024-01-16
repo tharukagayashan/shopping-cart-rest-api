@@ -4,14 +4,21 @@ import com.projects.shoppingcart.constants.HardCodeConstant;
 import com.projects.shoppingcart.dao.master.*;
 import com.projects.shoppingcart.dao.reference.ScRStatusRepository;
 import com.projects.shoppingcart.dto.master.ScMOrderDto;
+import com.projects.shoppingcart.dto.miscellaneous.ApiResponseDto;
+import com.projects.shoppingcart.dto.miscellaneous.PaginationDto;
 import com.projects.shoppingcart.dto.other.OrderCreateReqDto;
+import com.projects.shoppingcart.dto.other.OrderResponseDto;
 import com.projects.shoppingcart.dto.other.ProductDto;
 import com.projects.shoppingcart.error.BadRequestAlertException;
 import com.projects.shoppingcart.mapper.master.ScMOrderMapper;
+import com.projects.shoppingcart.mapper.master.ScMOrderProductMapper;
 import com.projects.shoppingcart.model.master.*;
 import com.projects.shoppingcart.model.reference.ScRStatus;
 import com.projects.shoppingcart.service.master.OrderService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -32,8 +39,9 @@ public class OrderServiceImpl implements OrderService {
     private final ScMOrderProductRepository orderProductRepository;
     private final ScMShopCartRepository shopCartRepository;
     private final ScMOrderMapper orderMapper;
+    private final ScMOrderProductMapper orderProductMapper;
 
-    public OrderServiceImpl(ScMProductRepository productRepository, ScMUserRepository userRepository, ScRStatusRepository statusRepository, ScMOrderRepository orderRepository, ScMOrderProductRepository orderProductRepository, ScMShopCartRepository shopCartRepository, ScMOrderMapper orderMapper) {
+    public OrderServiceImpl(ScMProductRepository productRepository, ScMUserRepository userRepository, ScRStatusRepository statusRepository, ScMOrderRepository orderRepository, ScMOrderProductRepository orderProductRepository, ScMShopCartRepository shopCartRepository, ScMOrderMapper orderMapper, ScMOrderProductMapper orderProductMapper) {
         this.productRepository = productRepository;
         this.userRepository = userRepository;
         this.statusRepository = statusRepository;
@@ -41,6 +49,7 @@ public class OrderServiceImpl implements OrderService {
         this.orderProductRepository = orderProductRepository;
         this.shopCartRepository = shopCartRepository;
         this.orderMapper = orderMapper;
+        this.orderProductMapper = orderProductMapper;
     }
 
     @Override
@@ -141,6 +150,95 @@ public class OrderServiceImpl implements OrderService {
         } catch (Exception e) {
             log.error("Error while creating order: {}", e.getMessage());
             throw new BadRequestAlertException(e.getMessage(), "Cart", "createOrder");
+        }
+    }
+
+    @Override
+    public ResponseEntity<ApiResponseDto<List<ScMOrderDto>>> getOrderList(Integer page, Integer per_page, String sort, String direction, String search, String statusId, String userId) {
+        try {
+            Page<ScMOrder> dbData;
+            if (direction.equalsIgnoreCase("asc")) {
+                dbData = orderRepository.getAllOrder(search, statusId, userId, PageRequest.of(page, per_page, Sort.by(Sort.Direction.ASC, sort)));
+            } else {
+                dbData = orderRepository.getAllOrder(search, statusId, userId, PageRequest.of(page, per_page, Sort.by(Sort.Direction.DESC, sort)));
+            }
+            ApiResponseDto<List<ScMOrderDto>> responseDto = new ApiResponseDto<>();
+            PaginationDto paginationDto = new PaginationDto();
+            paginationDto.setTotal(dbData.getTotalElements());
+            responseDto.setPagination(paginationDto);
+            responseDto.setResult(orderMapper.entityListToDtoList(dbData.getContent()));
+            return ResponseEntity.ok(responseDto);
+        } catch (Exception e) {
+            log.error("Error while getting order list: {}", e.getMessage());
+            throw new BadRequestAlertException(e.getMessage(), "Cart", "getOrderList");
+        }
+    }
+
+    @Override
+    public ResponseEntity<OrderResponseDto> getOrder(Long orderId) {
+        try {
+            if (orderId == null) {
+                throw new BadRequestAlertException("Invalid orderId", "Cart", "getOrder");
+            } else {
+                Optional<ScMOrder> optOrder = orderRepository.findById(orderId);
+                if (!optOrder.isPresent()) {
+                    throw new BadRequestAlertException("Order not found", "Cart", "getOrder");
+                } else {
+
+                    List<ScMOrderProduct> orderProductList = orderProductRepository.findByScMOrderOrderId(orderId);
+
+                    ScMOrder order = optOrder.get();
+                    OrderResponseDto orderResponseDto = new OrderResponseDto();
+                    orderResponseDto.setOrderId(order.getOrderId());
+                    orderResponseDto.setOrderNo(order.getOrderNo());
+                    orderResponseDto.setOrderDate(order.getOrderDate());
+                    orderResponseDto.setOrderTime(order.getOrderTime());
+                    orderResponseDto.setTotalItem(order.getTotalItem());
+                    orderResponseDto.setTotalAmount(order.getTotalAmount());
+                    orderResponseDto.setTotalDiscount(order.getTotalDiscount());
+                    orderResponseDto.setTotalTax(order.getTotalTax());
+                    orderResponseDto.setTotalPayable(order.getTotalPayable());
+                    orderResponseDto.setUserId(order.getScMUser().getUserId());
+                    orderResponseDto.setStatusId(order.getScRStatus().getStatusId());
+                    orderResponseDto.setProducts(orderProductMapper.entityListToDtoList(orderProductList));
+                    return ResponseEntity.ok(orderResponseDto);
+                }
+            }
+        } catch (Exception e) {
+            log.error("Error while getting order: {}", e.getMessage());
+            throw new BadRequestAlertException(e.getMessage(), "Cart", "getOrder");
+        }
+    }
+
+    @Override
+    public ResponseEntity<ScMOrderDto> cancelOrder(Long orderId) {
+        try {
+            if (orderId == null) {
+                throw new BadRequestAlertException("Invalid orderId", "Cart", "cancelOrder");
+            } else {
+                Optional<ScMOrder> optOrder = orderRepository.findById(orderId);
+                if (!optOrder.isPresent()) {
+                    throw new BadRequestAlertException("Order not found", "Cart", "cancelOrder");
+                } else {
+                    ScMOrder order = optOrder.get();
+                    Optional<ScRStatus> optStatus = statusRepository.findById(HardCodeConstant.STATUS_CANCELED_ID);
+                    if (!optStatus.isPresent()) {
+                        throw new BadRequestAlertException("Status not found", "Cart", "cancelOrder");
+                    }
+                    ScRStatus status = optStatus.get();
+                    order.setScRStatus(status);
+                    order = orderRepository.save(order);
+                    if (!order.getScRStatus().getStatusId().equals(HardCodeConstant.STATUS_CANCELED_ID)) {
+                        throw new BadRequestAlertException("Error while canceling order", "Cart", "cancelOrder");
+                    } else {
+                        log.info("Order canceled: {}", order.getOrderId());
+                        return ResponseEntity.ok(orderMapper.toDto(order));
+                    }
+                }
+            }
+        } catch (Exception e) {
+            log.error("Error while canceling order: {}", e.getMessage());
+            throw new BadRequestAlertException(e.getMessage(), "Cart", "cancelOrder");
         }
     }
 
