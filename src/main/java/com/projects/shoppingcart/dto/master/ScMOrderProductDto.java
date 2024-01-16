@@ -10,6 +10,10 @@ import lombok.NoArgsConstructor;
 public class ScMOrderProductDto {
     private Long orderItemId;
     private Integer productQty;
+
+    private Long orderId;
+    private Long productId;
+
     private ScMOrderDto scMOrder;
     private ScMProductDto scMProduct;
 }

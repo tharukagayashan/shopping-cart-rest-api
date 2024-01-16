@@ -5,10 +5,11 @@ import com.projects.shoppingcart.dto.other.AddToCartDto;
 import com.projects.shoppingcart.dto.other.CartResponseDto;
 import com.projects.shoppingcart.service.master.CartService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
+@Validated
 @RestController
 @RequestMapping("/cart")
 public class CartController {
@@ -31,11 +32,6 @@ public class CartController {
     @GetMapping("/{userId}")
     public ResponseEntity<CartResponseDto> getCart(@PathVariable("userId") Long userId) {
         return cartService.getCart(userId);
-    }
-
-    @PostMapping("/checkout")
-    public ResponseEntity<String> checkout(@RequestBody List<ScMShopCartDto> shopCartDtoList) {
-        return cartService.checkout(shopCartDtoList);
     }
 
 }

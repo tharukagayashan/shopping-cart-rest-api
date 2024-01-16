@@ -1,13 +1,13 @@
 package com.projects.shoppingcart.service.master.impl;
 
-import com.projects.shoppingcart.dao.master.ScMProductRepository;
-import com.projects.shoppingcart.dao.master.ScMShopCartRepository;
-import com.projects.shoppingcart.dao.master.ScMUserRepository;
+import com.projects.shoppingcart.dao.master.*;
+import com.projects.shoppingcart.dao.reference.ScRStatusRepository;
 import com.projects.shoppingcart.dto.master.ScMShopCartDto;
 import com.projects.shoppingcart.dto.other.AddToCartDto;
 import com.projects.shoppingcart.dto.other.CartItemResponseDto;
 import com.projects.shoppingcart.dto.other.CartResponseDto;
 import com.projects.shoppingcart.error.BadRequestAlertException;
+import com.projects.shoppingcart.mapper.master.ScMOrderMapper;
 import com.projects.shoppingcart.mapper.master.ScMShopCartMapper;
 import com.projects.shoppingcart.model.master.ScMProduct;
 import com.projects.shoppingcart.model.master.ScMShopCart;
@@ -147,34 +147,4 @@ public class CartServiceImpl implements CartService {
         return cartItemResponseDto;
     }
 
-    @Override
-    public ResponseEntity<String> checkout(List<ScMShopCartDto> shopCartDtoList) {
-        try {
-            if (shopCartDtoList.isEmpty()) {
-                throw new BadRequestAlertException("Cart is empty", "Cart", "checkout");
-            } else {
-
-                shopCartDtoList.forEach(shopCartDto -> {
-                    Optional<ScMProduct> optProduct = productRepository.findById(shopCartDto.getProductId());
-                    if (optProduct.isPresent()) {
-                        ScMProduct product = optProduct.get();
-                        product.setQuantity(product.getQuantity() - shopCartDto.getProductQty());
-                        productRepository.save(product);
-                    }
-                });
-
-                shopCartDtoList.forEach(shopCartDto -> {
-                    Optional<ScMShopCart> optShopCart = shopCartRepository.findById(shopCartDto.getShopCartId());
-                    if (optShopCart.isPresent()) {
-                        shopCartRepository.deleteById(shopCartDto.getShopCartId());
-                    }
-                });
-
-                return ResponseEntity.ok("Checkout successful");
-            }
-        } catch (Exception e) {
-            log.error("Error while checking out: {}", e.getMessage());
-            throw new BadRequestAlertException(e.getMessage(), "Cart", "checkout");
-        }
-    }
 }
