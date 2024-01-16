@@ -686,4 +686,130 @@ public class ReferenceServiceImpl implements ReferenceService {
             throw new BadRequestAlertException(e.getMessage(), "Reference", "deleteStatus");
         }
     }
+
+    @Override
+    public ResponseEntity<ScRProductBrandDto> getBrand(Long id) {
+        try {
+            if (id == null) {
+                throw new BadRequestAlertException("Brand id is null", "Reference", "getBrand");
+            } else {
+                Optional<ScRProductBrand> optProductBrand = productBrandRepository.findById(id);
+                if (!optProductBrand.isPresent()) {
+                    throw new BadRequestAlertException("Brand not found", "Reference", "getBrand");
+                }
+                return ResponseEntity.ok(productBrandMapper.toDto(optProductBrand.get()));
+            }
+        } catch (Exception e) {
+            log.error("Error while getting brand: ", e);
+            throw new BadRequestAlertException(e.getMessage(), "Reference", "getBrand");
+        }
+    }
+
+    @Override
+    public ResponseEntity<ScRProductTypeDto> getProductType(Long id) {
+        try {
+            if (id == null) {
+                throw new BadRequestAlertException("Product type id is null", "Reference", "getProductType");
+            } else {
+                Optional<ScRProductType> optProductType = productTypeRepository.findById(id);
+                if (!optProductType.isPresent()) {
+                    throw new BadRequestAlertException("Product type not found", "Reference", "getProductType");
+                }
+                return ResponseEntity.ok(productTypeMapper.toDto(optProductType.get()));
+            }
+        } catch (Exception e) {
+            log.error("Error while getting product type: ", e);
+            throw new BadRequestAlertException(e.getMessage(), "Reference", "getProductType");
+        }
+    }
+
+    @Override
+    public ResponseEntity<ScRProductCategoryDto> getProductCategory(Long id) {
+        try {
+            if (id == null) {
+                throw new BadRequestAlertException("Product category id is null", "Reference", "getProductCategory");
+            } else {
+                Optional<ScRProductCategory> optProductCategory = productCategoryRepository.findById(id);
+                if (!optProductCategory.isPresent()) {
+                    throw new BadRequestAlertException("Product category not found", "Reference", "getProductCategory");
+                }
+                return ResponseEntity.ok(productCategoryMapper.toDto(optProductCategory.get()));
+            }
+        } catch (Exception e) {
+            log.error("Error while getting product category: ", e);
+            throw new BadRequestAlertException(e.getMessage(), "Reference", "getProductCategory");
+        }
+    }
+
+    @Override
+    public ResponseEntity<ScRProductSubCategoryDto> getProductSubCategory(Long id) {
+        try {
+            if (id == null) {
+                throw new BadRequestAlertException("Product sub category id is null", "Reference", "getProductSubCategory");
+            } else {
+                Optional<ScRProductSubCategory> optProductSubCategory = productSubCategoryRepository.findById(id);
+                if (!optProductSubCategory.isPresent()) {
+                    throw new BadRequestAlertException("Product sub category not found", "Reference", "getProductSubCategory");
+                }
+                return ResponseEntity.ok(productSubCategoryMapper.toDto(optProductSubCategory.get()));
+            }
+        } catch (Exception e) {
+            log.error("Error while getting product sub category: ", e);
+            throw new BadRequestAlertException(e.getMessage(), "Reference", "getProductSubCategory");
+        }
+    }
+
+    @Override
+    public ResponseEntity<ScRProductVariableDto> getProductVariable(Long id) {
+        try {
+            if (id == null) {
+                throw new BadRequestAlertException("Product variable id is null", "Reference", "getProductVariable");
+            } else {
+                Optional<ScRProductVariable> optProductVariable = productVariableRepository.findById(id);
+                if (!optProductVariable.isPresent()) {
+                    throw new BadRequestAlertException("Product variable not found", "Reference", "getProductVariable");
+                }
+                return ResponseEntity.ok(productVariableMapper.toDto(optProductVariable.get()));
+            }
+        } catch (Exception e) {
+            log.error("Error while getting product variable: ", e);
+            throw new BadRequestAlertException(e.getMessage(), "Reference", "getProductVariable");
+        }
+    }
+
+    @Override
+    public ResponseEntity<ScRRoleDto> getUserRole(Long id) {
+        try {
+            if (id == null) {
+                throw new BadRequestAlertException("User role id is null", "Reference", "getUserRole");
+            } else {
+                Optional<ScRRole> optRole = roleRepository.findById(id);
+                if (!optRole.isPresent()) {
+                    throw new BadRequestAlertException("User role not found", "Reference", "getUserRole");
+                }
+                return ResponseEntity.ok(roleMapper.toDto(optRole.get()));
+            }
+        } catch (Exception e) {
+            log.error("Error while getting user role: ", e);
+            throw new BadRequestAlertException(e.getMessage(), "Reference", "getUserRole");
+        }
+    }
+
+    @Override
+    public ResponseEntity<ScRStatusDto> getStatus(Long id) {
+        try {
+            if (id == null) {
+                throw new BadRequestAlertException("Status id is null", "Reference", "getStatus");
+            } else {
+                Optional<ScRStatus> optStatus = statusRepository.findById(id);
+                if (!optStatus.isPresent()) {
+                    throw new BadRequestAlertException("Status not found", "Reference", "getStatus");
+                }
+                return ResponseEntity.ok(statusMapper.toDto(optStatus.get()));
+            }
+        } catch (Exception e) {
+            log.error("Error while getting status: ", e);
+            throw new BadRequestAlertException(e.getMessage(), "Reference", "getStatus");
+        }
+    }
 }

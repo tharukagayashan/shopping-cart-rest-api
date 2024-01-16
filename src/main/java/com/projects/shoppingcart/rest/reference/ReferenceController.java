@@ -162,4 +162,39 @@ public class ReferenceController {
         return referenceService.deleteStatus(id);
     }
 
+    @GetMapping("/brand/{id}")
+    public ResponseEntity<ScRProductBrandDto> getBrand(@PathVariable Long id) {
+        return referenceService.getBrand(id);
+    }
+
+    @GetMapping("/product-type/{id}")
+    public ResponseEntity<ScRProductTypeDto> getProductType(@PathVariable Long id) {
+        return referenceService.getProductType(id);
+    }
+
+    @GetMapping("/product-category/{id}")
+    public ResponseEntity<ScRProductCategoryDto> getProductCategory(@PathVariable Long id) {
+        return referenceService.getProductCategory(id);
+    }
+
+    @GetMapping("/product-sub-category/{id}")
+    public ResponseEntity<ScRProductSubCategoryDto> getProductSubCategory(@PathVariable Long id) {
+        return referenceService.getProductSubCategory(id);
+    }
+
+    @GetMapping("/product-variable/{id}")
+    public ResponseEntity<ScRProductVariableDto> getProductVariable(@PathVariable Long id) {
+        return referenceService.getProductVariable(id);
+    }
+
+    @GetMapping("/user-role/{id}")
+    public ResponseEntity<ScRRoleDto> getUserRole(@PathVariable Long id) {
+        return referenceService.getUserRole(id);
+    }
+
+    @GetMapping("/status/{id}")
+    public ResponseEntity<ScRStatusDto> getStatus(@PathVariable Long id) {
+        return referenceService.getStatus(id);
+    }
+
 }

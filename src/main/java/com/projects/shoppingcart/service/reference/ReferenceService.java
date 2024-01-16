@@ -62,4 +62,18 @@ public interface ReferenceService {
     ResponseEntity<Long> deleteUserRole(Long id);
 
     ResponseEntity<Long> deleteStatus(Long id);
+
+    ResponseEntity<ScRProductBrandDto> getBrand(Long id);
+
+    ResponseEntity<ScRProductTypeDto> getProductType(Long id);
+
+    ResponseEntity<ScRProductCategoryDto> getProductCategory(Long id);
+
+    ResponseEntity<ScRProductSubCategoryDto> getProductSubCategory(Long id);
+
+    ResponseEntity<ScRProductVariableDto> getProductVariable(Long id);
+
+    ResponseEntity<ScRRoleDto> getUserRole(Long id);
+
+    ResponseEntity<ScRStatusDto> getStatus(Long id);
 }
