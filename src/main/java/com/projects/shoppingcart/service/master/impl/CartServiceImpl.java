@@ -38,6 +38,19 @@ public class CartServiceImpl implements CartService {
         this.userRepository = userRepository;
     }
 
+    private static CartItemResponseDto getCartItemResponseDto(ScMShopCart shopCart, float productTotalPrice, float discount) {
+        CartItemResponseDto cartItemResponseDto = new CartItemResponseDto();
+        cartItemResponseDto.setProductId(shopCart.getScMProduct().getProductId());
+        cartItemResponseDto.setProductName(shopCart.getScMProduct().getName());
+        cartItemResponseDto.setProductQty(shopCart.getProductQty());
+        cartItemResponseDto.setPricePerUnit(shopCart.getScMProduct().getPrice());
+        cartItemResponseDto.setImage(shopCart.getScMProduct().getImage());
+        cartItemResponseDto.setDateAdded(shopCart.getDateAdded());
+        cartItemResponseDto.setTimeAdded(shopCart.getTimeAdded());
+        cartItemResponseDto.setTotalPrice(productTotalPrice);
+        cartItemResponseDto.setDiscount(discount);
+        return cartItemResponseDto;
+    }
 
     @Override
     public ResponseEntity<ScMShopCartDto> addToCart(AddToCartDto addToCartDto) {
@@ -131,20 +144,6 @@ public class CartServiceImpl implements CartService {
             log.error("Error while getting cart: {}", e.getMessage());
             throw new BadRequestAlertException(e.getMessage(), "Cart", "getCart");
         }
-    }
-
-    private static CartItemResponseDto getCartItemResponseDto(ScMShopCart shopCart, float productTotalPrice, float discount) {
-        CartItemResponseDto cartItemResponseDto = new CartItemResponseDto();
-        cartItemResponseDto.setProductId(shopCart.getScMProduct().getProductId());
-        cartItemResponseDto.setProductName(shopCart.getScMProduct().getName());
-        cartItemResponseDto.setProductQty(shopCart.getProductQty());
-        cartItemResponseDto.setPricePerUnit(shopCart.getScMProduct().getPrice());
-        cartItemResponseDto.setImage(shopCart.getScMProduct().getImage());
-        cartItemResponseDto.setDateAdded(shopCart.getDateAdded());
-        cartItemResponseDto.setTimeAdded(shopCart.getTimeAdded());
-        cartItemResponseDto.setTotalPrice(productTotalPrice);
-        cartItemResponseDto.setDiscount(discount);
-        return cartItemResponseDto;
     }
 
 }

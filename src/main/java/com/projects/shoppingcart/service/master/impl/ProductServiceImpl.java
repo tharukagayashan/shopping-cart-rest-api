@@ -53,6 +53,21 @@ public class ProductServiceImpl implements ProductService {
         this.productVariableMappingMapper = productVariableMappingMapper;
     }
 
+    private static ScMProduct getScMProduct(ProductCreateReqDto productCreateReqDto, Optional<ScRProductSubCategory> optProductSubCategory, Optional<ScRProductBrand> optProductBrand) {
+        ScMProduct product = new ScMProduct();
+        product.setName(productCreateReqDto.getName());
+        product.setDescription(productCreateReqDto.getDescription());
+        product.setCode(productCreateReqDto.getCode());
+        product.setPrice(productCreateReqDto.getPrice());
+        product.setQuantity(productCreateReqDto.getQuantity());
+        product.setImage(productCreateReqDto.getImage());
+        product.setScRProductSubCategory(optProductSubCategory.get());
+        product.setScRProductBrand(optProductBrand.get());
+        product.setDiscount(productCreateReqDto.getDiscount());
+        product.setIsActive(true);
+        return product;
+    }
+
     @Override
     public ResponseEntity<ScMProductDto> createProduct(ProductCreateReqDto productCreateReqDto) {
         try {
@@ -119,21 +134,6 @@ public class ProductServiceImpl implements ProductService {
             e.printStackTrace();
             throw new BadRequestAlertException(e.getMessage(), "Product", "ERROR");
         }
-    }
-
-    private static ScMProduct getScMProduct(ProductCreateReqDto productCreateReqDto, Optional<ScRProductSubCategory> optProductSubCategory, Optional<ScRProductBrand> optProductBrand) {
-        ScMProduct product = new ScMProduct();
-        product.setName(productCreateReqDto.getName());
-        product.setDescription(productCreateReqDto.getDescription());
-        product.setCode(productCreateReqDto.getCode());
-        product.setPrice(productCreateReqDto.getPrice());
-        product.setQuantity(productCreateReqDto.getQuantity());
-        product.setImage(productCreateReqDto.getImage());
-        product.setScRProductSubCategory(optProductSubCategory.get());
-        product.setScRProductBrand(optProductBrand.get());
-        product.setDiscount(productCreateReqDto.getDiscount());
-        product.setIsActive(true);
-        return product;
     }
 
     @Override

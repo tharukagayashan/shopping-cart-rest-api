@@ -7,6 +7,8 @@ import org.springframework.http.ResponseEntity;
 
 public interface CartService {
     ResponseEntity<ScMShopCartDto> addToCart(AddToCartDto addToCartDto);
+
     ResponseEntity<Long> removeFromCart(Long shopCartId);
+
     ResponseEntity<CartResponseDto> getCart(Long userId);
 }
