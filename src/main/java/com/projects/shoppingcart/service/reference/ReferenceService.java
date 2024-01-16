@@ -34,4 +34,32 @@ public interface ReferenceService {
     ResponseEntity<ScRRoleDto> createUserRole(RoleCreateReqDto roleCreateReqDto);
 
     ResponseEntity<ScRStatusDto> createStatus(StatusCreateReqDto statusCreateReqDto);
+
+    ResponseEntity<ScRProductBrandDto> updateBrand(Long id, ScRProductBrandDto productBrandUpdateReqDto);
+
+    ResponseEntity<ScRProductTypeDto> updateProductType(Long id, ScRProductTypeDto productTypeUpdateReqDto);
+
+    ResponseEntity<ScRProductCategoryDto> updateProductCategory(Long id, ScRProductCategoryDto productCategoryUpdateReqDto);
+
+    ResponseEntity<ScRProductSubCategoryDto> updateProductSubCategory(Long id, ScRProductSubCategoryDto productSubCategoryUpdateReqDto);
+
+    ResponseEntity<ScRProductVariableDto> updateProductVariable(Long id, ScRProductVariableDto productVariableUpdateReqDto);
+
+    ResponseEntity<ScRRoleDto> updateUserRole(Long id, ScRRoleDto roleUpdateReqDto);
+
+    ResponseEntity<ScRStatusDto> updateStatus(Long id, ScRStatusDto statusUpdateReqDto);
+
+    ResponseEntity<Long> deleteBrand(Long id);
+
+    ResponseEntity<Long> deleteProductType(Long id);
+
+    ResponseEntity<Long> deleteProductCategory(Long id);
+
+    ResponseEntity<Long> deleteProductSubCategory(Long id);
+
+    ResponseEntity<Long> deleteProductVariable(Long id);
+
+    ResponseEntity<Long> deleteUserRole(Long id);
+
+    ResponseEntity<Long> deleteStatus(Long id);
 }
