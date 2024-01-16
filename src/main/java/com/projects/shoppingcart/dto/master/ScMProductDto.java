@@ -1,7 +1,5 @@
 package com.projects.shoppingcart.dto.master;
 
-import com.projects.shoppingcart.dto.reference.ScRProductBrandDto;
-import com.projects.shoppingcart.dto.reference.ScRProductSubCategoryDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -1,13 +1,13 @@
 package com.projects.shoppingcart.service.master.impl;
 
-import com.projects.shoppingcart.dao.master.*;
-import com.projects.shoppingcart.dao.reference.ScRStatusRepository;
+import com.projects.shoppingcart.dao.master.ScMProductRepository;
+import com.projects.shoppingcart.dao.master.ScMShopCartRepository;
+import com.projects.shoppingcart.dao.master.ScMUserRepository;
 import com.projects.shoppingcart.dto.master.ScMShopCartDto;
 import com.projects.shoppingcart.dto.other.AddToCartDto;
 import com.projects.shoppingcart.dto.other.CartItemResponseDto;
 import com.projects.shoppingcart.dto.other.CartResponseDto;
 import com.projects.shoppingcart.error.BadRequestAlertException;
-import com.projects.shoppingcart.mapper.master.ScMOrderMapper;
 import com.projects.shoppingcart.mapper.master.ScMShopCartMapper;
 import com.projects.shoppingcart.model.master.ScMProduct;
 import com.projects.shoppingcart.model.master.ScMShopCart;
