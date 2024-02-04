@@ -1,9 +1,9 @@
 spring:
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:postgresql://localhost:5432/postgres?currentSchema=onlineshop
-    username: postgres
-    password: root
+    url: jdbc:postgresql://pg-dsi-tharukagayashan1.a.aivencloud.com:16735/defaultdb?currentSchema=shopping_db
+    username: avnadmin
+    password: AVNS_WuO5G0Uj52XfJVP2oxD
     driver-class-name: org.postgresql.Driver
     hikari:
       poolName: Hikari
