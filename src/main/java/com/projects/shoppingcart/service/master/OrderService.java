@@ -3,6 +3,7 @@ package com.projects.shoppingcart.service.master;
 import com.projects.shoppingcart.dto.master.ScMOrderDto;
 import com.projects.shoppingcart.dto.miscellaneous.ApiResponseDto;
 import com.projects.shoppingcart.dto.other.OrderCreateReqDto;
+import com.projects.shoppingcart.dto.other.OrderProcessReqDto;
 import com.projects.shoppingcart.dto.other.OrderResponseDto;
 import org.springframework.http.ResponseEntity;
 
@@ -16,4 +17,6 @@ public interface OrderService {
     ResponseEntity<OrderResponseDto> getOrder(Long orderId);
 
     ResponseEntity<ScMOrderDto> cancelOrder(Long orderId);
+
+    ResponseEntity<ScMOrderDto> processOrder(OrderProcessReqDto orderProcessReqDto);
 }

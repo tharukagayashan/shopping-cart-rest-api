@@ -7,6 +7,7 @@ import com.projects.shoppingcart.dto.master.ScMOrderDto;
 import com.projects.shoppingcart.dto.miscellaneous.ApiResponseDto;
 import com.projects.shoppingcart.dto.miscellaneous.PaginationDto;
 import com.projects.shoppingcart.dto.other.OrderCreateReqDto;
+import com.projects.shoppingcart.dto.other.OrderProcessReqDto;
 import com.projects.shoppingcart.dto.other.OrderResponseDto;
 import com.projects.shoppingcart.dto.other.ProductDto;
 import com.projects.shoppingcart.error.BadRequestAlertException;
@@ -239,6 +240,38 @@ public class OrderServiceImpl implements OrderService {
         } catch (Exception e) {
             log.error("Error while canceling order: {}", e.getMessage());
             throw new BadRequestAlertException(e.getMessage(), "Cart", "cancelOrder");
+        }
+    }
+
+    @Override
+    public ResponseEntity<ScMOrderDto> processOrder(OrderProcessReqDto orderProcessReqDto) {
+        try {
+            if (orderProcessReqDto.getOrderId() == null) {
+                throw new BadRequestAlertException("Invalid orderId", "Cart", "processOrder");
+            } else {
+                Optional<ScMOrder> optOrder = orderRepository.findById(orderProcessReqDto.getOrderId());
+                if (!optOrder.isPresent()) {
+                    throw new BadRequestAlertException("Order not found", "Cart", "processOrder");
+                } else {
+                    ScMOrder order = optOrder.get();
+                    Optional<ScRStatus> optStatus = statusRepository.findById(orderProcessReqDto.getStatusId());
+                    if (!optStatus.isPresent()) {
+                        throw new BadRequestAlertException("Status not found", "Cart", "processOrder");
+                    }
+                    ScRStatus status = optStatus.get();
+                    order.setScRStatus(status);
+                    order = orderRepository.save(order);
+                    if (!order.getScRStatus().getStatusId().equals(orderProcessReqDto.getStatusId())) {
+                        throw new BadRequestAlertException("Error while processing order", "Cart", "processOrder");
+                    } else {
+                        log.info("Order processed. Order ID: {} and Order Status: {}", order.getOrderId(), order.getScRStatus().getName());
+                        return ResponseEntity.ok(orderMapper.toDto(order));
+                    }
+                }
+            }
+        } catch (Exception e) {
+            log.error("Error while processing order: {}", e.getMessage());
+            throw new BadRequestAlertException(e.getMessage(), "Cart", "processOrder");
         }
     }
 

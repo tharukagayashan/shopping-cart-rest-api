@@ -3,6 +3,7 @@ package com.projects.shoppingcart.rest.master;
 import com.projects.shoppingcart.dto.master.ScMOrderDto;
 import com.projects.shoppingcart.dto.miscellaneous.ApiResponseDto;
 import com.projects.shoppingcart.dto.other.OrderCreateReqDto;
+import com.projects.shoppingcart.dto.other.OrderProcessReqDto;
 import com.projects.shoppingcart.dto.other.OrderResponseDto;
 import com.projects.shoppingcart.service.master.OrderService;
 import org.springframework.http.ResponseEntity;
@@ -51,6 +52,11 @@ public class OrderController {
     @PutMapping("/{orderId}")
     public ResponseEntity<ScMOrderDto> cancelOrder(@PathVariable("orderId") Long orderId) {
         return orderService.cancelOrder(orderId);
+    }
+
+    @PutMapping("/process-order")
+    public ResponseEntity<ScMOrderDto> processOrder(@RequestBody OrderProcessReqDto orderProcessReqDto) {
+        return orderService.processOrder(orderProcessReqDto);
     }
 
 }
