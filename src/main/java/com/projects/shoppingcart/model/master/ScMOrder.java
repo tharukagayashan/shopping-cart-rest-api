@@ -5,6 +5,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 @Builder
@@ -28,7 +29,7 @@ public class ScMOrder {
     private LocalDate orderDate;
 
     @Column(name = "ORDER_TIME")
-    private String orderTime;
+    private LocalTime orderTime;
 
     @Column(name = "TOTAL_ITEM")
     private Integer totalItem;

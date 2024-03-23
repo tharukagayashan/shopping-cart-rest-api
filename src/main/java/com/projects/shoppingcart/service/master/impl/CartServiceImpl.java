@@ -38,6 +38,19 @@ public class CartServiceImpl implements CartService {
         this.userRepository = userRepository;
     }
 
+    private static CartItemResponseDto getCartItemResponseDto(ScMShopCart shopCart, float productTotalPrice, float discount) {
+        CartItemResponseDto cartItemResponseDto = new CartItemResponseDto();
+        cartItemResponseDto.setProductId(shopCart.getScMProduct().getProductId());
+        cartItemResponseDto.setProductName(shopCart.getScMProduct().getName());
+        cartItemResponseDto.setProductQty(shopCart.getProductQty());
+        cartItemResponseDto.setPricePerUnit(shopCart.getScMProduct().getPrice());
+        cartItemResponseDto.setImage(shopCart.getScMProduct().getImage());
+        cartItemResponseDto.setDateAdded(shopCart.getDateAdded());
+        cartItemResponseDto.setTimeAdded(shopCart.getTimeAdded());
+        cartItemResponseDto.setTotalPrice(productTotalPrice);
+        cartItemResponseDto.setDiscount(discount);
+        return cartItemResponseDto;
+    }
 
     @Override
     public ResponseEntity<ScMShopCartDto> addToCart(AddToCartDto addToCartDto) {
@@ -49,16 +62,27 @@ public class CartServiceImpl implements CartService {
             } else if (!optUser.isPresent()) {
                 throw new BadRequestAlertException("User not found", "Cart", "addToCart");
             } else {
-                ScMShopCart shopCart = new ScMShopCart();
-                shopCart.setProductQty(addToCartDto.getProductQty());
-                shopCart.setScMProduct(optProduct.get());
-                shopCart.setScMUser(optUser.get());
-                shopCart.setDateAdded(LocalDate.now());
-                shopCart.setTimeAdded(LocalTime.now());
-                shopCart = shopCartRepository.save(shopCart);
-                if (shopCart.getShopCartId() == null) {
-                    throw new BadRequestAlertException("Error while adding to cart", "Cart", "addToCart");
+                Optional<ScMShopCart> optShopCart = shopCartRepository.findByScMUserAndScMProduct(optUser.get(), optProduct.get());
+                if (!optShopCart.isPresent()) {
+                    ScMShopCart shopCart = new ScMShopCart();
+                    shopCart.setProductQty(addToCartDto.getProductQty());
+                    shopCart.setScMProduct(optProduct.get());
+                    shopCart.setScMUser(optUser.get());
+                    shopCart.setDateAdded(LocalDate.now());
+                    shopCart.setTimeAdded(LocalTime.now());
+                    shopCart = shopCartRepository.save(shopCart);
+                    if (shopCart.getShopCartId() == null) {
+                        throw new BadRequestAlertException("Error while adding to cart", "Cart", "addToCart");
+                    } else {
+                        return ResponseEntity.ok(shopCartMapper.toDto(shopCart));
+                    }
                 } else {
+                    ScMShopCart shopCart = optShopCart.get();
+                    shopCart.setProductQty(shopCart.getProductQty() + addToCartDto.getProductQty());
+                    shopCart.setDateAdded(LocalDate.now());
+                    shopCart.setTimeAdded(LocalTime.now());
+                    shopCart = shopCartRepository.save(shopCart);
+                    log.info("Cart existing item updated: {}", shopCart.getShopCartId());
                     return ResponseEntity.ok(shopCartMapper.toDto(shopCart));
                 }
             }
@@ -133,48 +157,4 @@ public class CartServiceImpl implements CartService {
         }
     }
 
-    private static CartItemResponseDto getCartItemResponseDto(ScMShopCart shopCart, float productTotalPrice, float discount) {
-        CartItemResponseDto cartItemResponseDto = new CartItemResponseDto();
-        cartItemResponseDto.setProductId(shopCart.getScMProduct().getProductId());
-        cartItemResponseDto.setProductName(shopCart.getScMProduct().getName());
-        cartItemResponseDto.setProductQty(shopCart.getProductQty());
-        cartItemResponseDto.setPricePerUnit(shopCart.getScMProduct().getPrice());
-        cartItemResponseDto.setImage(shopCart.getScMProduct().getImage());
-        cartItemResponseDto.setDateAdded(shopCart.getDateAdded());
-        cartItemResponseDto.setTimeAdded(shopCart.getTimeAdded());
-        cartItemResponseDto.setTotalPrice(productTotalPrice);
-        cartItemResponseDto.setDiscount(discount);
-        return cartItemResponseDto;
-    }
-
-    @Override
-    public ResponseEntity<String> checkout(List<ScMShopCartDto> shopCartDtoList) {
-        try {
-            if (shopCartDtoList.isEmpty()) {
-                throw new BadRequestAlertException("Cart is empty", "Cart", "checkout");
-            } else {
-
-                shopCartDtoList.forEach(shopCartDto -> {
-                    Optional<ScMProduct> optProduct = productRepository.findById(shopCartDto.getProductId());
-                    if (optProduct.isPresent()) {
-                        ScMProduct product = optProduct.get();
-                        product.setQuantity(product.getQuantity() - shopCartDto.getProductQty());
-                        productRepository.save(product);
-                    }
-                });
-
-                shopCartDtoList.forEach(shopCartDto -> {
-                    Optional<ScMShopCart> optShopCart = shopCartRepository.findById(shopCartDto.getShopCartId());
-                    if (optShopCart.isPresent()) {
-                        shopCartRepository.deleteById(shopCartDto.getShopCartId());
-                    }
-                });
-
-                return ResponseEntity.ok("Checkout successful");
-            }
-        } catch (Exception e) {
-            log.error("Error while checking out: {}", e.getMessage());
-            throw new BadRequestAlertException(e.getMessage(), "Cart", "checkout");
-        }
-    }
 }

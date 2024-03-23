@@ -1,17 +1,18 @@
-package com.projects.shoppingcart.dto.master;
+package com.projects.shoppingcart.dto.other;
 
-import com.projects.shoppingcart.dto.reference.ScRStatusDto;
+import com.projects.shoppingcart.dto.master.ScMOrderProductDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class ScMOrderDto {
+public class OrderResponseDto {
     private Long orderId;
     private String orderNo;
     private LocalDate orderDate;
@@ -21,10 +22,7 @@ public class ScMOrderDto {
     private Float totalDiscount;
     private Float totalTax;
     private Float totalPayable;
-
-    private Long statusId;
     private Long userId;
-
-    private ScRStatusDto scRStatus;
-    private ScMUserDto scMUser;
+    private Long statusId;
+    private List<ScMOrderProductDto> products;
 }
