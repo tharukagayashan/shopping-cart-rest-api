@@ -40,6 +40,37 @@ public class AuthServiceImpl implements AuthService {
         this.shippingInfoRepository = shippingInfoRepository;
     }
 
+    private static ScMUser getScMUser(UserRegisterReqDto userRegisterReqDto, String encryptedPassword, Optional<ScRRole> optRole) {
+        ScMUser user = new ScMUser();
+        user.setFirstName(userRegisterReqDto.getFirstName());
+        user.setLastName(userRegisterReqDto.getLastName());
+        user.setEmail(userRegisterReqDto.getEmail());
+        user.setUsername(userRegisterReqDto.getUsername());
+        user.setPassword(encryptedPassword);
+        user.setMobileNo(userRegisterReqDto.getMobileNo());
+        user.setIsActive(true);
+        user.setScRRole(optRole.get());
+        return user;
+    }
+
+    private static ScMShippingInfo getScMShippingInfo(UserRegisterReqDto userRegisterReqDto, ScMUser user) {
+        ShippingInfoCreateDto shippingInfoCreateDto = userRegisterReqDto.getShippingInfo();
+        ScMShippingInfo shippingInfo = new ScMShippingInfo();
+        shippingInfo.setFullName(user.getFirstName() + " " + user.getLastName());
+        shippingInfo.setMobileNo(user.getMobileNo());
+        shippingInfo.setEmail(user.getEmail());
+        shippingInfo.setCity(shippingInfoCreateDto.getCity());
+        shippingInfo.setProvince(shippingInfoCreateDto.getProvince());
+        shippingInfo.setPostalCode(shippingInfoCreateDto.getPostalCode());
+        shippingInfo.setCountry(shippingInfoCreateDto.getCountry());
+        shippingInfo.setAddressLine1(shippingInfoCreateDto.getAddressLine1());
+        shippingInfo.setAddressLine2(shippingInfoCreateDto.getAddressLine2());
+        shippingInfo.setAddressLine3(shippingInfoCreateDto.getAddressLine3());
+        shippingInfo.setIsDefault(true);
+        shippingInfo.setScMUser(user);
+        return shippingInfo;
+    }
+
     @Override
     public ResponseEntity<ScMUserDto> registerUser(UserRegisterReqDto userRegisterReqDto) {
         try {
@@ -97,37 +128,6 @@ public class AuthServiceImpl implements AuthService {
             log.error("Error while registering user member: {}", e.getMessage());
             throw new BadRequestAlertException(e.getMessage(), "user", "user");
         }
-    }
-
-    private static ScMUser getScMUser(UserRegisterReqDto userRegisterReqDto, String encryptedPassword, Optional<ScRRole> optRole) {
-        ScMUser user = new ScMUser();
-        user.setFirstName(userRegisterReqDto.getFirstName());
-        user.setLastName(userRegisterReqDto.getLastName());
-        user.setEmail(userRegisterReqDto.getEmail());
-        user.setUsername(userRegisterReqDto.getUsername());
-        user.setPassword(encryptedPassword);
-        user.setMobileNo(userRegisterReqDto.getMobileNo());
-        user.setIsActive(true);
-        user.setScRRole(optRole.get());
-        return user;
-    }
-
-    private static ScMShippingInfo getScMShippingInfo(UserRegisterReqDto userRegisterReqDto, ScMUser user) {
-        ShippingInfoCreateDto shippingInfoCreateDto = userRegisterReqDto.getShippingInfo();
-        ScMShippingInfo shippingInfo = new ScMShippingInfo();
-        shippingInfo.setFullName(user.getFirstName() + " " + user.getLastName());
-        shippingInfo.setMobileNo(user.getMobileNo());
-        shippingInfo.setEmail(user.getEmail());
-        shippingInfo.setCity(shippingInfoCreateDto.getCity());
-        shippingInfo.setProvince(shippingInfoCreateDto.getProvince());
-        shippingInfo.setPostalCode(shippingInfoCreateDto.getPostalCode());
-        shippingInfo.setCountry(shippingInfoCreateDto.getCountry());
-        shippingInfo.setAddressLine1(shippingInfoCreateDto.getAddressLine1());
-        shippingInfo.setAddressLine2(shippingInfoCreateDto.getAddressLine2());
-        shippingInfo.setAddressLine3(shippingInfoCreateDto.getAddressLine3());
-        shippingInfo.setIsDefault(true);
-        shippingInfo.setScMUser(user);
-        return shippingInfo;
     }
 
     @Override
